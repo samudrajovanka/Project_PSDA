@@ -1,4 +1,4 @@
 '''
-Nama Kelompk:
+Nama Kelompok:
 
 '''
