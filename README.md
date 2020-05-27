@@ -1,4 +1,4 @@
-# Project_PSDA
+# Project PSDA
 Repository ini untuk project besar mata kuliah Praktikum Struktur Data dan Algoritma
 
 - Untuk melihat apa yang harus dikerjakan bisa liat dibagian Projects
