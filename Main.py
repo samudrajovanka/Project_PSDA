@@ -6,3 +6,8 @@ Nama Kelompok:
 - Daffy Fayyadhya Ramzy     1910511044
 - Muhammad Raffiza Azka     1910511062
 '''
+
+# code struktur data queue
+
+
+# code struktur data BST
