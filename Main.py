@@ -95,5 +95,60 @@ class Queue:
             print("Queue Kosong")
 
 # code struktur data BST
+class datapenduduk:
+    nik: str
+    nama: str
+    jeniskelamin: chr
+    alamat: str
+    tgllahir: list
+    usia: int
+    pekerjaan: str
 
+class Node:
+    def __init__(self,nik,nama,jeniskelamin,alamat,usia,pekerjaan):
+        self.nik = nik
+        self.nama = nama
+        self.jeniskelamin = jeniskelamin
+        self.alamat = alamat
+        # self.tgllahir = tgllahir
+        self.usia = usia
+        self.pekerjaan = pekerjaan
+        self.left = None
+        self.right = None
 
+class BinarySearchTree:
+    def __init__(self):
+        self.root = None
+
+    def insert(self,nik,nama,jeniskelamin,alamat,usia,pekerjaan):
+        newNode = Node(nik,nama,jeniskelamin,alamat,usia,pekerjaan)
+        if (self.root == None):
+            self.root = newNode
+            return
+        current = self.root
+        parent = None
+        while(True):
+           parent = current
+           if (nik < current.nik):
+               current = current.left
+               if (current == None):
+                   parent.left = newNode
+                   return
+           else:
+               current = current.right
+               if (current == None):
+                   parent.right = newNode
+                   return
+
+    def display(self,root):
+        if (root != None):
+            self.display(root.left)
+            print("NIK :",root.nik, end="\n")
+            print("Nama :",root.nama, end="\n")
+            print("Kelamin :",root.jeniskelamin, end="\n")
+            print("Alamat :",root.alamat, end="\n")
+            print("Pekerjaan :", root.pekerjaan, end="\n")
+            print("===================")
+            self.display(root.right)
+    #tgl lahir belom
+    #delete, find belom
