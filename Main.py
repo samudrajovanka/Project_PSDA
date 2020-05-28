@@ -8,9 +8,6 @@ Nama Kelompok:
 - Muhammad Raffiza Azka     1910511062
 '''
 
-# code struktur data Queue
-
-
 class DataPenduduk:
     nik: str
     nama: str
@@ -20,7 +17,7 @@ class DataPenduduk:
     usia: int
     pekerjaan: str
 
-
+# code struktur data Queue
 class Queue:
     def __init__(self):
         self.first = None
@@ -102,18 +99,6 @@ class Queue:
             print("Queue Kosong")
 
 # code struktur data BST
-
-
-class datapenduduk:
-    nik: str
-    nama: str
-    jeniskelamin: chr
-    alamat: str
-    tgllahir: list
-    usia: int
-    pekerjaan: str
-
-
 class Node:
     def __init__(self, nik, nama, jeniskelamin, alamat, usia, pekerjaan):
         self.nik = nik
