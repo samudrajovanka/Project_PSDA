@@ -252,8 +252,6 @@ b.insert(110, 'seno', 'l', 'bekasi', 19, 'maling')
 b.insert(200, 'udin', 'l', 'bandung', 16, 'pelajar')
 b.insert(90, 'fatimah', 'p', 'padang', 17, 'pelajar')
 
-b.display(b.root)
-
 # Main code
 if __name__ == "__main__":
     import os
