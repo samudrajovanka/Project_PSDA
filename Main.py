@@ -147,11 +147,90 @@ class BinarySearchTree:
             print("Nama :",root.nama, end="\n")
             print("Kelamin :",root.jeniskelamin, end="\n")
             print("Alamat :",root.alamat, end="\n")
+            print("Usia :",root.usia, end="\n")
             print("Pekerjaan :", root.pekerjaan, end="\n")
             print("===================")
             self.display(root.right)
+
+    def find(self,nik):
+        current = self.root
+        while (current != None):
+            if (current.nik == nik):
+                return True
+            elif (current.nik > nik):
+                current = current.left
+            else:
+                current = current.right
+        return False
+
+    def delete(self,nik):
+        parent = self.root
+        current = self.root
+        isLeftChild = False
+
+        while (current.nik != nik):
+            parent = current
+            if (current.nik > nik):
+                isLeftChild = True
+                current = current.left
+            else:
+                isLeftChild = False
+                current = current.right
+            if (current == None):
+                return False
+
+        #case 1 (Node has no children)
+        if (current.left == None and current.right == None):
+            if (current == self.root):
+                self.root = None
+            if (isLeftChild == True):
+                parent.left = None
+            else:
+                parent.right = None
+
+        #case 2 (node has 1 child)
+        elif (current.right == None):
+            if (current == self.root):
+                self.root = current.left
+            elif (isLeftChild):
+                parent.left = current.left
+            else:
+                parent.right = current.left
+
+        elif (current.left == None):
+            if (current == self.root):
+                self.root = current.right
+            elif (isLeftChild):
+                parent.left = current.right
+            else:
+                parent.right = current.right
+
+        elif(current.left != None and current.right != None):
+            successor = self.getSuccessor(current)
+            if (current == self.root):
+                self.root = successor
+            elif (isLeftChild):
+                parent.left = successor
+            else:
+                parent.right = successor
+            successor.left = current.left
+        return True
+
+    def getSuccessor(self, deleleNode):
+        successor = None
+        successorParent = None
+        current = deleleNode.right
+        while (current != None):
+            successorParent = successor
+            successor = current
+            current = current.left
+
+        if (successor != deleleNode.right):
+            successorParent.left = successor.right
+            successor.right = deleleNode.right
+
+        return successor
     #tgl lahir belom
-    #delete, find belom
     
 #test :
 b= BinarySearchTree()
