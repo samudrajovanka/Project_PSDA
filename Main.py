@@ -241,7 +241,7 @@ class BinarySearchTree:
             successor.right = deleleNode.right
 
         return successor
-    # tgl lahir belom
+        # tgl lahir belom
 
 
 # test :
