@@ -63,6 +63,9 @@ class Queue:
 
     def getFirst(self):
         return self.data[self.first]
+    
+    def getFirst(self):
+        return self.data[self.first]
 
     def delete(self):
         if(self.last == 0):
@@ -82,10 +85,10 @@ class Queue:
 
     def printQueue(self):
         if(self.first != 1):
-            print("=======Isi Queue=======")
-            for i in range(self.last, (self.first-1), -1):
-                print("="*10)
-                print("Data ke ", i)
+            print(" ")
+            for i in range(self.first-1,self.last):
+                print("="*25)
+                print("Data ke ",i+1)
                 print("NIK           :", self.data[i].nik)
                 print("Nama          :", self.data[i].nama)
                 print("Jenis Kelamin :", self.data[i].jenisKelamin)
@@ -94,7 +97,7 @@ class Queue:
                 print("Usia          :", self.data[i].usia)
                 print("Pekerjaan     :", self.data[i].pekerjaan)
 
-                print("="*10)
+                print("="*25)
         else:
             print("Queue Kosong")
 
