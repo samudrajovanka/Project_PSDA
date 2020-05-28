@@ -152,3 +152,13 @@ class BinarySearchTree:
             self.display(root.right)
     #tgl lahir belom
     #delete, find belom
+    
+#test :
+b= BinarySearchTree()
+
+b.insert(100,'budi','l','jakarta',20,'kuli')
+b.insert(110,'seno','l','bekasi',19,'maling')
+b.insert(200,'udin','l','bandung',16,'pelajar')
+b.insert(90,'fatimah','p','padang',17,'pelajar')
+
+b.display(b.root)
