@@ -1,4 +1,3 @@
-
 '''
 Nama Kelompok:
 - Marshall Anugrah Najmi    1910511034
@@ -7,6 +6,7 @@ Nama Kelompok:
 - Daffy Fayyadhya Ramzy     1910511044
 - Muhammad Raffiza Azka     1910511062
 '''
+
 
 class DataPenduduk:
     nik: str
@@ -18,6 +18,8 @@ class DataPenduduk:
     pekerjaan: str
 
 # code struktur data Queue
+
+
 class Queue:
     def __init__(self):
         self.first = None
@@ -63,9 +65,6 @@ class Queue:
 
     def getFirst(self):
         return self.data[self.first]
-    
-    def getFirst(self):
-        return self.data[self.first]
 
     def delete(self):
         if(self.last == 0):
@@ -86,9 +85,9 @@ class Queue:
     def printQueue(self):
         if(self.first != 1):
             print(" ")
-            for i in range(self.first-1,self.last):
+            for i in range(self.first, self.last+1):
                 print("="*25)
-                print("Data ke ",i+1)
+                print("Data ke ", i+1)
                 print("NIK           :", self.data[i].nik)
                 print("Nama          :", self.data[i].nama)
                 print("Jenis Kelamin :", self.data[i].jenisKelamin)
@@ -102,6 +101,8 @@ class Queue:
             print("Queue Kosong")
 
 # code struktur data BST
+
+
 class Node:
     def __init__(self, nik, nama, jeniskelamin, alamat, usia, pekerjaan):
         self.nik = nik
@@ -233,15 +234,16 @@ class BinarySearchTree:
 
 
 # test :
-b = BinarySearchTree()
+# b = BinarySearchTree()
 
-b.insert(100, 'budi', 'l', 'jakarta', 20, 'kuli')
-b.insert(110, 'seno', 'l', 'bekasi', 19, 'maling')
-b.insert(200, 'udin', 'l', 'bandung', 16, 'pelajar')
-b.insert(90, 'fatimah', 'p', 'padang', 17, 'pelajar')
+# b.insert(100, 'budi', 'l', 'jakarta', 20, 'kuli')
+# b.insert(110, 'seno', 'l', 'bekasi', 19, 'maling')
+# b.insert(200, 'udin', 'l', 'bandung', 16, 'pelajar')
+# b.insert(90, 'fatimah', 'p', 'padang', 17, 'pelajar')
+
 
 # Main code
-if __name__ == "__main__":
+if __name__ == "__main":
     import os
 
     # fungsi untuk clear screen
