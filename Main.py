@@ -243,11 +243,11 @@ class BinarySearchTree:
 
 
 # Main code
-if __name__ == "__main":
+if __name__ == "__main__":
     import os
 
     # fungsi untuk clear screen
-    def clsscr(): return os.system("cls")
+    clsscr = lambda: os.system("cls")
 
     while True:
         clsscr()
