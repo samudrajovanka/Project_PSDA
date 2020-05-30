@@ -120,25 +120,25 @@ class BinarySearchTree:
     def __init__(self):
         self.root = None
 
-    def insert(self, nik, nama, jeniskelamin, alamat, usia, pekerjaan):
-        newNode = Node(nik, nama, jeniskelamin, alamat, usia, pekerjaan)
+        def insert(self,nik,nama,jeniskelamin,alamat,usia,pekerjaan):
+        newNode = Node(nik,nama,jeniskelamin,alamat,usia,pekerjaan)
         if (self.root == None):
             self.root = newNode
             return
         current = self.root
         parent = None
         while(True):
-            parent = current
-            if (nik < current.nik):
-                current = current.left
-                if (current == None):
-                    parent.left = newNode
-                    return
-            else:
-                current = current.right
-                if (current == None):
-                    parent.right = newNode
-                    return
+           parent = current
+           if (int(nik) < int(current.nik)):
+               current = current.left
+               if (current == None):
+                   parent.left = newNode
+                   return
+           else:
+               current = current.right
+               if (current == None):
+                   parent.right = newNode
+                   return
 
     def display(self, root):
         if (root != None):
@@ -152,25 +152,25 @@ class BinarySearchTree:
             print("===================")
             self.display(root.right)
 
-    def find(self, nik):
+    def find(self,nik):
         current = self.root
         while (current != None):
-            if (current.nik == nik):
+            if (int(current.nik) == int(nik)):
                 return True
-            elif (current.nik > nik):
+            elif (int(current.nik) > int(nik)):
                 current = current.left
             else:
                 current = current.right
         return False
 
-    def delete(self, nik):
+    def delete(self,nik):
         parent = self.root
         current = self.root
         isLeftChild = False
 
-        while (current.nik != nik):
+        while (int(current.nik) != int(nik)):
             parent = current
-            if (current.nik > nik):
+            if (int(current.nik) > int(nik)):
                 isLeftChild = True
                 current = current.left
             else:
@@ -179,7 +179,7 @@ class BinarySearchTree:
             if (current == None):
                 return False
 
-        # case 1 (Node has no children)
+        #case 1 (Node has no children)
         if (current.left == None and current.right == None):
             if (current == self.root):
                 self.root = None
@@ -188,7 +188,7 @@ class BinarySearchTree:
             else:
                 parent.right = None
 
-        # case 2 (node has 1 child)
+        #case 2 (node has 1 child)
         elif (current.right == None):
             if (current == self.root):
                 self.root = current.left
