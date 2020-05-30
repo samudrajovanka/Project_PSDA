@@ -7,6 +7,9 @@ Nama Kelompok:
 - Muhammad Raffiza Azka     1910511062
 '''
 
+import os
+import time
+
 
 class DataPenduduk:
     nik: str
@@ -120,25 +123,25 @@ class BinarySearchTree:
     def __init__(self):
         self.root = None
 
-        def insert(self,nik,nama,jeniskelamin,alamat,usia,pekerjaan):
-        newNode = Node(nik,nama,jeniskelamin,alamat,usia,pekerjaan)
+    def insert(self, nik, nama, jeniskelamin, alamat, usia, pekerjaan):
+        newNode = Node(nik, nama, jeniskelamin, alamat, usia, pekerjaan)
         if (self.root == None):
             self.root = newNode
             return
         current = self.root
         parent = None
         while(True):
-           parent = current
-           if (int(nik) < int(current.nik)):
-               current = current.left
-               if (current == None):
-                   parent.left = newNode
-                   return
-           else:
-               current = current.right
-               if (current == None):
-                   parent.right = newNode
-                   return
+            parent = current
+            if (int(nik) < int(current.nik)):
+                current = current.left
+                if (current == None):
+                    parent.left = newNode
+                    return
+            else:
+                current = current.right
+                if (current == None):
+                    parent.right = newNode
+                    return
 
     def display(self, root):
         if (root != None):
@@ -152,7 +155,7 @@ class BinarySearchTree:
             print("===================")
             self.display(root.right)
 
-    def find(self,nik):
+    def find(self, nik):
         current = self.root
         while (current != None):
             if (int(current.nik) == int(nik)):
@@ -163,7 +166,7 @@ class BinarySearchTree:
                 current = current.right
         return False
 
-    def delete(self,nik):
+    def delete(self, nik):
         parent = self.root
         current = self.root
         isLeftChild = False
@@ -179,7 +182,7 @@ class BinarySearchTree:
             if (current == None):
                 return False
 
-        #case 1 (Node has no children)
+        # case 1 (Node has no children)
         if (current.left == None and current.right == None):
             if (current == self.root):
                 self.root = None
@@ -188,7 +191,7 @@ class BinarySearchTree:
             else:
                 parent.right = None
 
-        #case 2 (node has 1 child)
+        # case 2 (node has 1 child)
         elif (current.right == None):
             if (current == self.root):
                 self.root = current.left
@@ -216,18 +219,18 @@ class BinarySearchTree:
             successor.left = current.left
         return True
 
-    def getSuccessor(self, deleleNode):
+    def getSuccessor(self, deleteNode):
         successor = None
         successorParent = None
-        current = deleleNode.right
+        current = deleteNode.right
         while (current != None):
             successorParent = successor
             successor = current
             current = current.left
 
-        if (successor != deleleNode.right):
+        if (successor != deleteNode.right):
             successorParent.left = successor.right
-            successor.right = deleleNode.right
+            successor.right = deleteNode.right
 
         return successor
         # tgl lahir belom
@@ -241,15 +244,33 @@ class BinarySearchTree:
 # b.insert(200, 'udin', 'l', 'bandung', 16, 'pelajar')
 # b.insert(90, 'fatimah', 'p', 'padang', 17, 'pelajar')
 
+# fungsi untuk menghitung usia dilihat dari tanggal lahir
+def hitungUsia(tglLahir):
+    waktu = time.localtime()
+    usia = (waktu.tm_year-1) - int(tglLahir[2])
+
+    if waktu.tm_mon == int(tglLahir[1]):
+        if waktu.tm_mday <= int(tglLahir[0]):
+            usia = waktu.tm_year - int(tglLahir[2])
+    elif waktu.tm_mon > int(tglLahir[1]):
+        usia = waktu.tm_year - int(tglLahir[2])
+
+    return usia
+
 
 # Main code
 if __name__ == "__main__":
-    import os
 
     # fungsi untuk clear screen
-    clsscr = lambda: os.system("cls")
+    def clsscr(): return os.system("cls")
+
+    # inisialisasi objek
+    queue = Queue()
+    queue.createEmpty()
 
     while True:
+
+        # Main menu
         clsscr()
         print("===========================")
         print("            Menu")
@@ -264,8 +285,53 @@ if __name__ == "__main__":
         menu = input("Pilih menu > ")
 
         if menu == "1":
+
             # kode memasukan data baru
-            pass
+            while True:
+                clsscr()
+                print("=========================")
+                print("        Buat Data")
+                print("=========================")
+                NIK = input("NIK              : ")
+                nama = input("Nama             : ")
+                jenisKelamin = input("Jenis Kelamin    : ")
+                alamat = input("Alamat           : ")
+                print("- Format (DD/MM/YYYY)")
+                tglLahir = input("Tanggal Lahir    : ").split("/")
+                pekerjaan = input("Pekerjaan        : ")
+
+                # menghitung usia berdasarkan tanggal lahir
+                usia = hitungUsia(tglLahir)
+
+                yakin = input("\nApakah anda sudah yakin[y/t] > ")
+
+                if yakin.lower() == "y":
+
+                    # memasukan data yang telah diinput ke dalam queue
+                    queue.add(NIK, nama, jenisKelamin, alamat,
+                              tglLahir, usia, pekerjaan)
+                    print("\nData anda sedang diproses, mohon tunggu...")
+                    input("Tekan ENTER untuk kembali...")
+                    break
+                elif yakin.lower() == "t":
+                    yakin = input("Apakah anda ingin mengisi ulang [y/t] > ")
+
+                    # mengisi data ulang
+                    if yakin.lower() == "y":
+                        pass
+                    elif yakin.lower() == "t":
+                        break
+                    else:
+                        print("\nMaaf pilihan yang anda pilih tidak tersedia")
+                        print("Data tidak tersimpan!!!")
+                        input("Tekan ENTER untuk kembali...")
+                        break
+                else:
+                    print("\nMaaf pilihan yang anda pilih tidak tersedia")
+                    print("Data tidak tersimpan!!!")
+                    input("Tekan ENTER untuk kembali...")
+                    break
+
         elif menu == "2":
             # kode untuk melihat data yang sudah selesai diproses
             pass
@@ -285,5 +351,4 @@ if __name__ == "__main__":
         else:
             # kode jika user memilih diluar jangkauan
             print("\nMaaf pilihan yang ada masukan tidak tersedia")
-            print("Tekan ENTER untuk kembali...", end="")
-            input()
+            input("Tekan ENTER untuk kembali...")
