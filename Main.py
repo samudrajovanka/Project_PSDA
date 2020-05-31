@@ -107,12 +107,12 @@ class Queue:
 
 
 class Node:
-    def __init__(self, nik, nama, jeniskelamin, alamat, usia, pekerjaan):
+    def __init__(self, nik, nama, jeniskelamin, alamat, tgllahir, usia, pekerjaan):
         self.nik = nik
         self.nama = nama
         self.jeniskelamin = jeniskelamin
         self.alamat = alamat
-        # self.tgllahir = tgllahir
+        self.tgllahir = tgllahir
         self.usia = usia
         self.pekerjaan = pekerjaan
         self.left = None
@@ -123,8 +123,8 @@ class BinarySearchTree:
     def __init__(self):
         self.root = None
 
-    def insert(self, nik, nama, jeniskelamin, alamat, usia, pekerjaan):
-        newNode = Node(nik, nama, jeniskelamin, alamat, usia, pekerjaan)
+    def insert(self, nik, nama, jeniskelamin, alamat, tgllahir, usia, pekerjaan):
+        newNode = Node(nik, nama, jeniskelamin, alamat, tgllahir, usia, pekerjaan)
         if (self.root == None):
             self.root = newNode
             return
@@ -233,16 +233,7 @@ class BinarySearchTree:
             successor.right = deleteNode.right
 
         return successor
-        # tgl lahir belom
 
-
-# test :
-# b = BinarySearchTree()
-
-# b.insert(100, 'budi', 'l', 'jakarta', 20, 'kuli')
-# b.insert(110, 'seno', 'l', 'bekasi', 19, 'maling')
-# b.insert(200, 'udin', 'l', 'bandung', 16, 'pelajar')
-# b.insert(90, 'fatimah', 'p', 'padang', 17, 'pelajar')
 
 # fungsi untuk menghitung usia dilihat dari tanggal lahir
 def hitungUsia(tglLahir):
