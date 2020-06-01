@@ -166,6 +166,24 @@ class BinarySearchTree:
                 current = current.right
         return False
 
+    def printNode(self, nik):
+        current = self.root
+        while (current != None):
+            if (int(current.nik) == int(nik)):
+                print("===================")
+                print("NIK :", current.nik, end="\n")
+                print("Nama :", current.nama, end="\n")
+                print("Kelamin :", current.jeniskelamin, end="\n")
+                print("Alamat :", current.alamat, end="\n")
+                print("Usia :", current.usia, end="\n")
+                print("Pekerjaan :", current.pekerjaan, end="\n")
+                print("===================")
+                return 0
+            elif (int(current.nik) > int(nik)):
+                current = current.left
+            else:
+                current = current.right
+    
     def delete(self, nik):
         parent = self.root
         current = self.root
@@ -341,6 +359,7 @@ if __name__ == "__main__":
                 check = BST.find(NIK)
                 if check == True:
                     print("Data ditemukan")
+                    BST.printNode(NIK)
                     yakin = input("Hapus Data? [y/t] > ")
                     if yakin.lower() == "y":
                         clsscr()
