@@ -166,6 +166,24 @@ class BinarySearchTree:
                 current = current.right
         return False
 
+    def printNode(self, nik):
+        current = self.root
+        while (current != None):
+            if (int(current.nik) == int(nik)):
+                print("===================")
+                print("NIK :", current.nik, end="\n")
+                print("Nama :", current.nama, end="\n")
+                print("Kelamin :", current.jeniskelamin, end="\n")
+                print("Alamat :", current.alamat, end="\n")
+                print("Usia :", current.usia, end="\n")
+                print("Pekerjaan :", current.pekerjaan, end="\n")
+                print("===================")
+                return 0
+            elif (int(current.nik) > int(nik)):
+                current = current.left
+            else:
+                current = current.right
+    
     def delete(self, nik):
         parent = self.root
         current = self.root
@@ -257,6 +275,7 @@ if __name__ == "__main__":
 
     # inisialisasi objek
     queue = Queue()
+    BST = BinarySearchTree()
     queue.createEmpty()
 
     while True:
@@ -331,9 +350,58 @@ if __name__ == "__main__":
             pass
         elif menu == "4":
             # kode menghapus data yang sudah diproses
-            pass
+            while True:
+                clsscr()
+                print("=========================")
+                print("        Hapus Data")
+                print("=========================")
+                NIK = input("Masukkan NIK dari data yang ingin dihapus: ")
+                check = BST.find(NIK)
+                if check == True:
+                    print("Data ditemukan")
+                    BST.printNode(NIK)
+                    yakin = input("Hapus Data? [y/t] > ")
+                    if yakin.lower() == "y":
+                        clsscr()
+                        BST.delete(NIK)
+                        print("Data berhasil dihapus")
+                        input("Tekan ENTER untuk kembali...")
+                        break
+                    elif yakin.lower() == 't':
+                        clsscr()
+                        print("Data tidak jadi dihapus")
+                        yakin = input("Masukkan ulang NIK? [y/t] > ")
+                        if yakin.lower() == 'y':
+                            pass
+                        elif yakin.lower() == 't':
+                            break
+                        else:
+                            print("\nMaaf pilihan yang anda pilih tidak tersedia")
+                            input("Tekan ENTER untuk kembali...")
+                elif check == False:
+                    print("Data dengan NIK tersebut tidak ditemukan")
+                    tanya = input("Masukkan ulang NIK? [y/t]")
+                    if tanya.lower() == 'y':
+                        pass
+                    elif tanya.lower() == 'n':
+                        break
+                    else:
+                        print("\nMaaf pilihan yang anda pilih tidak tersedia")
+                        input("Tekan ENTER untuk kembali...")
+                        break
+                else:
+                    print("\nMaaf pilihan yang anda pilih tidak tersedia")
+                    input("Tekan ENTER untuk kembali...")
+                    break
         elif menu == "5":
             # kode untuk melihat data yang masih dalam proses
+            clsscr()
+            print("=========================")
+            print("    Urutan Data Input")
+            print("=========================\n")
+            print("Urutan data yang akan dimasukkan adalah: ")
+            queue.printQueue()
+            input("Tekan ENTER untuk kembali...")
             pass
         elif menu == "6":
             # kode untuk keluar dari program
