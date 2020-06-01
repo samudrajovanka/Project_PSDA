@@ -87,32 +87,21 @@ class Queue:
 
     def printQueue(self):
         if(self.first != 1):
-            print(" ")
             for i in range(self.first, self.last+1):
-                print("="*25)
-                print("Data ke ", i+1)
-                print("NIK           :", self.data[i].nik)
-                print("Nama          :", self.data[i].nama)
-                print("Jenis Kelamin :", self.data[i].jenisKelamin)
-                print("Alamat        :", self.data[i].alamat)
-                print("Tanggal Lahir :", self.data[i].tglLahir)
-                print("Usia          :", self.data[i].usia)
-                print("Pekerjaan     :", self.data[i].pekerjaan)
-
-                print("="*25)
+                print(self.data[i].nik + "\t" + self.data[i].nama)
         else:
-            print("Queue Kosong")
+            print("Tidak ada data")
 
 # code struktur data BST
 
 
 class Node:
-    def __init__(self, nik, nama, jeniskelamin, alamat, tgllahir, usia, pekerjaan):
+    def __init__(self, nik, nama, jenisKelamin, alamat, tglLahir, usia, pekerjaan):
         self.nik = nik
         self.nama = nama
-        self.jeniskelamin = jeniskelamin
+        self.jenisKelamin = jenisKelamin
         self.alamat = alamat
-        self.tgllahir = tgllahir
+        self.tglLahir = tglLahir
         self.usia = usia
         self.pekerjaan = pekerjaan
         self.left = None
@@ -123,8 +112,9 @@ class BinarySearchTree:
     def __init__(self):
         self.root = None
 
-    def insert(self, nik, nama, jeniskelamin, alamat, tgllahir, usia, pekerjaan):
-        newNode = Node(nik, nama, jeniskelamin, alamat, tgllahir, usia, pekerjaan)
+    def insert(self, nik, nama, jenisKelamin, alamat, tglLahir, usia, pekerjaan):
+        newNode = Node(nik, nama, jenisKelamin, alamat,
+                       tglLahir, usia, pekerjaan)
         if (self.root == None):
             self.root = newNode
             return
@@ -146,13 +136,14 @@ class BinarySearchTree:
     def display(self, root):
         if (root != None):
             self.display(root.left)
-            print("NIK :", root.nik, end="\n")
-            print("Nama :", root.nama, end="\n")
-            print("Kelamin :", root.jeniskelamin, end="\n")
-            print("Alamat :", root.alamat, end="\n")
-            print("Usia :", root.usia, end="\n")
-            print("Pekerjaan :", root.pekerjaan, end="\n")
-            print("===================")
+            print("NIK              :", root.nik)
+            print("Nama             :", root.nama)
+            print("Kelamin          :", root.jenisKelamin)
+            print("Alamat           :", root.alamat)
+            print("Tanggal Lahir    :", "/".join(root.tglLahir))
+            print("Usia             :", root.usia)
+            print("Pekerjaan        :", root.pekerjaan)
+            print("===============================")
             self.display(root.right)
 
     def find(self, nik):
@@ -170,20 +161,20 @@ class BinarySearchTree:
         current = self.root
         while (current != None):
             if (int(current.nik) == int(nik)):
-                print("===================")
-                print("NIK :", current.nik, end="\n")
-                print("Nama :", current.nama, end="\n")
-                print("Kelamin :", current.jeniskelamin, end="\n")
-                print("Alamat :", current.alamat, end="\n")
-                print("Usia :", current.usia, end="\n")
-                print("Pekerjaan :", current.pekerjaan, end="\n")
-                print("===================")
+                print("NIK              :", current.nik)
+                print("Nama             :", current.nama)
+                print("Kelamin          :", current.jenisKelamin)
+                print("Alamat           :", current.alamat)
+                print("Tanggal Lahir    :", "/".join(current.tglLahir))
+                print("Usia             :", current.usia)
+                print("Pekerjaan        :", current.pekerjaan)
+                print("===============================")
                 return 0
             elif (int(current.nik) > int(nik)):
                 current = current.left
             else:
                 current = current.right
-    
+
     def delete(self, nik):
         parent = self.root
         current = self.root
@@ -313,9 +304,9 @@ if __name__ == "__main__":
                 # menghitung usia berdasarkan tanggal lahir
                 usia = hitungUsia(tglLahir)
 
-                yakin = input("\nApakah anda sudah yakin[y/t] > ")
+                tanya = input("\nApakah anda sudah yakin [y/t] > ")
 
-                if yakin.lower() == "y":
+                if tanya.lower() == "y":
 
                     # memasukan data yang telah diinput ke dalam queue
                     queue.add(NIK, nama, jenisKelamin, alamat,
@@ -323,13 +314,13 @@ if __name__ == "__main__":
                     print("\nData anda sedang diproses, mohon tunggu...")
                     input("Tekan ENTER untuk kembali...")
                     break
-                elif yakin.lower() == "t":
-                    yakin = input("Apakah anda ingin mengisi ulang [y/t] > ")
+                elif tanya.lower() == "t":
+                    tanya = input("Apakah anda ingin mengisi ulang [y/t] > ")
 
                     # mengisi data ulang
-                    if yakin.lower() == "y":
+                    if tanya.lower() == "y":
                         pass
-                    elif yakin.lower() == "t":
+                    elif tanya.lower() == "t":
                         break
                     else:
                         print("\nMaaf pilihan yang anda pilih tidak tersedia")
@@ -356,58 +347,83 @@ if __name__ == "__main__":
                 print("        Hapus Data")
                 print("=========================")
                 NIK = input("Masukkan NIK dari data yang ingin dihapus: ")
+
+                # mengecek apakah data ada
                 check = BST.find(NIK)
                 if check == True:
-                    print("Data ditemukan")
                     BST.printNode(NIK)
-                    yakin = input("Hapus Data? [y/t] > ")
-                    if yakin.lower() == "y":
+                    tanya = input("Hapus Data? [y/t] > ")
+                    if tanya.lower() == "y":
                         clsscr()
+
+                        # menghapus data pada BST
                         BST.delete(NIK)
-                        print("Data berhasil dihapus")
+                        print("Data berhasil dihapus!!!")
                         input("Tekan ENTER untuk kembali...")
                         break
-                    elif yakin.lower() == 't':
+                    elif tanya.lower() == 't':
                         clsscr()
                         print("Data tidak jadi dihapus")
-                        yakin = input("Masukkan ulang NIK? [y/t] > ")
-                        if yakin.lower() == 'y':
+                        tanya = input("Masukkan ulang NIK? [y/t] > ")
+                        if tanya.lower() == 'y':
                             pass
-                        elif yakin.lower() == 't':
+                        elif tanya.lower() == 't':
                             break
                         else:
                             print("\nMaaf pilihan yang anda pilih tidak tersedia")
                             input("Tekan ENTER untuk kembali...")
+                            break
+                    else:
+                        print("\nMaaf pilihan yang anda pilih tidak tersedia")
+                        input("Tekan ENTER untuk kembali...")
+                        break
                 elif check == False:
-                    print("Data dengan NIK tersebut tidak ditemukan")
-                    tanya = input("Masukkan ulang NIK? [y/t]")
+                    print("\nData dengan NIK tersebut tidak ditemukan")
+                    tanya = input("Masukkan ulang NIK? [y/t] > ")
                     if tanya.lower() == 'y':
                         pass
-                    elif tanya.lower() == 'n':
+                    elif tanya.lower() == 't':
                         break
                     else:
                         print("\nMaaf pilihan yang anda pilih tidak tersedia")
                         input("Tekan ENTER untuk kembali...")
                         break
-                else:
-                    print("\nMaaf pilihan yang anda pilih tidak tersedia")
-                    input("Tekan ENTER untuk kembali...")
-                    break
+
         elif menu == "5":
             # kode untuk melihat data yang masih dalam proses
             clsscr()
-            print("=========================")
-            print("    Urutan Data Input")
-            print("=========================\n")
-            print("Urutan data yang akan dimasukkan adalah: ")
+            print("====================================")
+            print("             Dalam Proses")
+            print("====================================")
+            print("NIK\t\tNama")
+            print("------------------------------------")
+
+            # mencetak isi dalam antrian proses
             queue.printQueue()
-            input("Tekan ENTER untuk kembali...")
-            pass
+
+            # mengambil data yang ada pada antrian pertama
+            dataPertama = queue.getFirst()
+            tanya = input("\nApakah data " + dataPertama.nik +
+                          " sudah selesai dikerjakan [y/t] > ")
+
+            # memasukan data pertama pada antrian kedalam data yang sudah selesai dikerjakan
+            if tanya.lower() == "y":
+                BST.insert(dataPertama.nik, dataPertama.nama, dataPertama.jenisKelamin,
+                           dataPertama.alamat, dataPertama.tglLahir, dataPertama.usia, dataPertama.pekerjaan)
+                print("\nData", dataPertama.nik, "telah selesai dikerjakan")
+                input("Tekan ENTER untuk kembali...")
+                queue.delete()
+            elif tanya.lower() == "t":
+                input("Tekan ENTER untuk kembali...")
+            else:
+                print("\nMaaf pilihan yang anda pilih tidak tersedia")
+                input("Tekan ENTER untuk kembali...")
+
         elif menu == "6":
             # kode untuk keluar dari program
             clsscr()
             exit("Terima kasih...")
         else:
-            # kode jika user memilih diluar jangkauan
+            # kode jika user memilih diluar jangkauan pilihan menu
             print("\nMaaf pilihan yang ada masukan tidak tersedia")
             input("Tekan ENTER untuk kembali...")
