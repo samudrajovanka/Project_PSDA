@@ -125,9 +125,16 @@ class BinarySearchTree:
                 if (current == None):
                     parent.right = newNode
                     return
+    def isEmpty(self):
+        hasil=False
+        if(self.root==None):
+            hasil=True
+        return hasil
 
     def display(self, root):
-        if (root != None):
+        if(self.isEmpty()):
+            print("Data kosong")
+        elif (root != None):
             self.display(root.left)
             print("NIK              :", root.NIK)
             print("Nama             :", root.nama)
@@ -396,7 +403,7 @@ if __name__ == "__main__":
         elif menu == "2":
             # kode untuk melihat data yang sudah selesai diproses
             BST.display(BST.root)
-            input()
+            input("Press enter to continue...")
             pass
         elif menu == "3":
             # kode mencari data yang sudah selesai diproses
