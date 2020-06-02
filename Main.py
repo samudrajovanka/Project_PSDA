@@ -14,7 +14,7 @@ from time import localtime
 class DataPenduduk:
     NIK: str
     nama: str
-    jenisKelamin: chr
+    kelamin: chr
     alamat: str
     tglLahir: list
     usia: int
@@ -36,7 +36,7 @@ class Queue:
             hasil = True
         return hasil
 
-    def add(self, NIK, nama, jenisKelamin, alamat, tglLahir, usia, pekerjaan):
+    def add(self, NIK, nama, kelamin, alamat, tglLahir, usia, pekerjaan):
         if(self.isEmpty() == True):
             self.last = 0
             self.first = 0
@@ -45,7 +45,7 @@ class Queue:
             self.data[self.last] = DataPenduduk()
             self.data[0].NIK = NIK
             self.data[0].nama = nama
-            self.data[0].jenisKelamin = jenisKelamin
+            self.data[0].kelamin = kelamin
             self.data[0].alamat = alamat
             self.data[0].tglLahir = tglLahir
             self.data[0].usia = usia
@@ -57,7 +57,7 @@ class Queue:
             self.data[self.last] = DataPenduduk()
             self.data[self.last].NIK = NIK
             self.data[self.last].nama = nama
-            self.data[self.last].jenisKelamin = jenisKelamin
+            self.data[self.last].kelamin = kelamin
             self.data[self.last].alamat = alamat
             self.data[self.last].tglLahir = tglLahir
             self.data[self.last].usia = usia
@@ -75,7 +75,7 @@ class Queue:
             for i in range(self.first+1, self.last+1):
                 self.data[i-1].NIK = self.data[i].NIK
                 self.data[i-1].nama = self.data[i].nama
-                self.data[i-1].jenisKelamin = self.data[i].jenisKelamin
+                self.data[i-1].kelamin = self.data[i].kelamin
                 self.data[i-1].alamat = self.data[i].alamat
                 self.data[i-1].usia = self.data[i].usia
                 self.data[i-1].pekerjaan = self.data[i].pekerjaan
@@ -91,10 +91,10 @@ class Queue:
 
 # code struktur data BST
 class Node:
-    def __init__(self, NIK, nama, jenisKelamin, alamat, tglLahir, usia, pekerjaan):
+    def __init__(self, NIK, nama, kelamin, alamat, tglLahir, usia, pekerjaan):
         self.NIK = NIK
         self.nama = nama
-        self.jenisKelamin = jenisKelamin
+        self.kelamin = kelamin
         self.alamat = alamat
         self.tglLahir = tglLahir
         self.usia = usia
@@ -106,9 +106,8 @@ class BinarySearchTree:
     def __init__(self):
         self.root = None
 
-    def insert(self, NIK, nama, jenisKelamin, alamat, tglLahir, usia, pekerjaan):
-        newNode = Node(NIK, nama, jenisKelamin, alamat,
-                       tglLahir, usia, pekerjaan)
+    def insert(self, NIK, nama, kelamin, alamat, tglLahir, usia, pekerjaan):
+        newNode = Node(NIK, nama, kelamin, alamat, tglLahir, usia, pekerjaan)
         if (self.root == None):
             self.root = newNode
             return
@@ -132,7 +131,7 @@ class BinarySearchTree:
             self.display(root.left)
             print("NIK              :", root.NIK)
             print("Nama             :", root.nama)
-            print("Kelamin          :", root.jenisKelamin)
+            print("Kelamin          :", root.kelamin)
             print("Alamat           :", root.alamat)
             print("Tanggal Lahir    :", "/".join(root.tglLahir))
             print("Usia             :", root.usia)
@@ -157,13 +156,13 @@ class BinarySearchTree:
             if (int(current.NIK) == int(NIK)):
                 print("NIK              :", current.NIK)
                 print("Nama             :", current.nama)
-                print("Kelamin          :", current.jenisKelamin)
+                print("Kelamin          :", current.kelamin)
                 print("Alamat           :", current.alamat)
                 print("Tanggal Lahir    :", "/".join(current.tglLahir))
                 print("Usia             :", current.usia)
                 print("Pekerjaan        :", current.pekerjaan)
                 print("===============================")
-                return 0
+                break
             elif (int(current.NIK) > int(NIK)):
                 current = current.left
             else:
@@ -265,6 +264,41 @@ def cekData(NIK, objekQueue, objekBST):
         
     return exist
 
+# untuk mengecek kevalidasian data
+def validasiData(NIK, kelamin, tglLahir):
+    try:
+        hasil = True
+        pesanError = ""
+        # mengecek validasi NIK
+        if NIK.isalpha():
+            raise ValueError("NIK yang anda masukan tidak valid")
+        elif len(NIK) < 10 or len(NIK) > 10:
+            raise ValueError("NIK harus terdiri dari 10 angka")
+        
+        # mengecek validasi jenis kelamin
+        if kelamin.lower() != "l" and kelamin.lower() != "p":
+            raise ValueError("Jenis kelamin yang anda masukan tidak valid")
+        
+        # mengecek validasi tanggal lahir
+        if len(tglLahir) != 3:
+            raise ValueError("Format tanggal yang anda masukan salah")
+        else:
+            if tglLahir[0].isalpha() or tglLahir[1].isalpha() or tglLahir[2].isalpha():
+                raise ValueError("Format tanggal yang anda masukan salah")
+            if int(tglLahir[0]) < 1 or int(tglLahir[0] > 31):
+                raise ValueError("Format tanggal yang anda masukan salah")
+            if int(tglLahir[1]) < 1 or int(tglLahir[1]) > 12:
+                raise ValueError(" Format tanggal yang anda masukan salah")
+            if int(tglLahir[2]) < 1800 or int(tglLahir[2]) > localtime().tm_year:
+                raise ValueError("Format tanggal yang anda masukan salah")
+
+    # masuk jika ada error
+    except ValueError as VE:
+        hasil = False
+        pesanError = VE
+    finally:
+        return hasil, pesanError
+
 
 # Main code
 if __name__ == "__main__":
@@ -277,6 +311,10 @@ if __name__ == "__main__":
     BST = BinarySearchTree()
     queue.createEmpty()
 
+    clear()
+    print("Selamat datang di Pendataan Penduduk")
+    input("Tekan ENTER untuk masuk...")
+
     while True:
 
         # Main menu
@@ -288,7 +326,7 @@ if __name__ == "__main__":
         print("[2] Lihat Data")
         print("[3] Cari Data")
         print("[4] Hapus Data")
-        print("[5] Lihat Data Dalam Proses")
+        print("[5] Data Dalam Proses")
         print("[6] Keluar")
         print("---------------------------")
         menu = input("Pilih menu > ")
@@ -301,49 +339,64 @@ if __name__ == "__main__":
                 print("=========================")
                 print("        Buat Data")
                 print("=========================")
-                NIK             = input("NIK              : ")
-                nama            = input("Nama             : ")
-                jenisKelamin    = input("Jenis Kelamin    : ")
-                alamat          = input("Alamat           : ")
-                print("- Format (DD/MM/YYYY)")
-                tglLahir        = input("Tanggal Lahir    : ").split("/")
-                pekerjaan       = input("Pekerjaan        : ")
+                NIK             = input("NIK                 : ")
+                nama            = input("Nama                : ")
+                kelamin         = input("Jenis Kelamin [L/P] : ")
+                alamat          = input("Alamat              : ")
+                print("- Format DD/MM/YYYY")
+                tglLahir        = input("Tanggal Lahir       : ").split("/")
+                pekerjaan       = input("Pekerjaan           : ")
 
                 # menghitung usia berdasarkan tanggal lahir
-                usia = hitungUsia(tglLahir)
+                valid, pesanError = validasiData(NIK, kelamin, tglLahir)
+                if valid:
+                    usia = hitungUsia(tglLahir)
 
-                while True:
-                    tanya = input("\nApakah anda sudah yakin [y/t] > ")
-                    if tanya.lower() == "y":
-                        exist = cekData(NIK, queue, BST)
-                        if exist:
-                            # Data tidak berhasil diinput karena double
-                            print("\nPERHATIAN: Data yang anda masukan sudah ada")
-                            input("Tekan ENTER untuk kembali...")
-                        
-                        if not exist:
-                            # memasukan data yang telah diinput ke dalam queue
-                            queue.add(NIK, nama, jenisKelamin, alamat,
-                                    tglLahir, usia, pekerjaan)
-                            print("\nData anda sedang diproses, mohon tunggu...")
-                            input("Tekan ENTER untuk kembali...")
+                    while True:
+                        tanya = input("\nApakah anda sudah yakin [y/t] > ")
+                        if tanya.lower() == "y":
+                            exist = cekData(NIK, queue, BST)
+                            if exist:
+                                # Data tidak berhasil diinput karena double
+                                print("\nPERHATIAN: Data yang anda masukan sudah ada")
+                                input("Tekan ENTER untuk kembali...")
+                            
+                            else:
+                                # memasukan data yang telah diinput ke dalam queue
+                                queue.add(NIK, nama, kelamin, alamat,
+                                        tglLahir, usia, pekerjaan)
+                                print("\nData anda sedang diproses, mohon tunggu...")
+                                input("Tekan ENTER untuk kembali...")
 
-                        masuk = False
-                        break
-                        
-                    elif tanya.lower() == "t":
-                        while True:
-                            tanya = input("Apakah anda ingin mengisi ulang [y/t] > ")
-                            # mengisi data ulang
-                            if tanya.lower() == "y":
-                                break
-                            elif tanya.lower() == "t":
-                                masuk = False
-                                break
-                        break
+                            masuk = False
+                            break
+                            
+                        elif tanya.lower() == "t":
+                            while True:
+                                tanya = input("Apakah anda ingin mengisi ulang [y/t] > ")
+                                # mengisi data ulang
+                                if tanya.lower() == "y":
+                                    break
+                                elif tanya.lower() == "t":
+                                    masuk = False
+                                    break
+                            break
+                else:
+                    print("\nPERHATIAN")
+                    print(pesanError)
+                    while True:
+                        tanya = input("Apakah anda ingin mengisi ulang [y/t] > ")
+                        # mengisi data ulang
+                        if tanya.lower() == "y":
+                            break
+                        elif tanya.lower() == "t":
+                            masuk = False
+                            break
 
         elif menu == "2":
             # kode untuk melihat data yang sudah selesai diproses
+            BST.display(BST.root)
+            input()
             pass
         elif menu == "3":
             # kode mencari data yang sudah selesai diproses
@@ -353,14 +406,15 @@ if __name__ == "__main__":
             masuk = True
             while masuk:
                 clear()
-                print("=========================")
-                print("        Hapus Data")
-                print("=========================")
                 NIK = input("Masukkan NIK dari data yang ingin dihapus: ")
 
                 # mengecek apakah data ada
                 check = BST.find(NIK)
                 if check == True:
+                    clear()
+                    print("=========================")
+                    print("        Hapus Data")
+                    print("=========================")
                     print(end= "\n")
                     BST.printNode(NIK)
                     while True:
@@ -422,7 +476,7 @@ if __name__ == "__main__":
 
                     # memasukan data pertama pada antrian kedalam data yang sudah selesai dikerjakan
                     if tanya.lower() == "y":
-                        BST.insert(dataPertama.NIK, dataPertama.nama, dataPertama.jenisKelamin,
+                        BST.insert(dataPertama.NIK, dataPertama.nama, dataPertama.kelamin,
                                 dataPertama.alamat, dataPertama.tglLahir, dataPertama.usia, dataPertama.pekerjaan)
                         print("\nData", dataPertama.NIK, "telah selesai dikerjakan")
                         input("Tekan ENTER untuk kembali...")
