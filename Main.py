@@ -125,18 +125,18 @@ class BinarySearchTree:
                 if (current == None):
                     parent.right = newNode
                     return
+    def isEmpty(self):
+        hasil=False
+        if(self.root==None):
+            hasil=True
+        return hasil
 
     def display(self, root):
-        if (root != None):
+        if(self.isEmpty()):
+            print("Data kosong")
+        elif (root != None):
             self.display(root.left)
-            print("NIK              :", root.NIK)
-            print("Nama             :", root.nama)
-            print("Kelamin          :", root.kelamin)
-            print("Alamat           :", root.alamat)
-            print("Tanggal Lahir    :", "/".join(root.tglLahir))
-            print("Usia             :", root.usia)
-            print("Pekerjaan        :", root.pekerjaan)
-            print("===============================")
+            print(root.NIK + "\t\t" + root.nama)
             self.display(root.right)
 
     def find(self, NIK):
@@ -395,12 +395,76 @@ if __name__ == "__main__":
 
         elif menu == "2":
             # kode untuk melihat data yang sudah selesai diproses
-            BST.display(BST.root)
-            input()
-            pass
+            repeat = True
+            while repeat:
+                clear()
+                print("\n====================================")
+                print("          Data Penduduk")
+                print("====================================")
+                print("NIK\t\tNama")
+                print("------------------------------------")
+                BST.display(BST.root)
+                choose = input("[1] Lihat Detail Data\n[2] Kembali ke menu\n\nPilih menu > ")
+                if choose == "1":
+                    NIK = input("Masukkan NIK untuk dicari = ")
+                    check = BST.find(NIK)
+                    if check == True:
+                        print("===========================")
+                        print("       Data Penduduk")
+                        print("===========================")
+                        print(end= "\n")
+                        BST.printNode(NIK)
+                    elif check == False:
+                        print("Data yang anda cari tidak ditemukan.")
+                    repeat2 = True
+                    while repeat2:
+                         yn = input("Apakah anda ingin mengulang? [y/n] ")
+                         if yn.lower() == "y":
+                             break
+                         elif yn.lower() == "n":
+                             input("Tekan ENTER untuk kembali...")
+                             repeat2 = False
+                             repeat = False
+                             break
+                         else:
+                             print("Input tidak dikenal.")
+                             break
+                elif choose == "2":
+                    repeat = False
+                    break
+                else:
+                    print("Input tidak dikenal.")
         elif menu == "3":
             # kode mencari data yang sudah selesai diproses
-            pass
+            masuk = True
+            while masuk:
+                clear()
+                NIK = input("Masukkan NIK untuk dicari = ")
+                
+                #cek datanya ada apa tidak
+                check = BST.find(NIK)
+                if check == True:
+                    print("===========================")
+                    print("       Data Penduduk")
+                    print("===========================")
+                    print(end= "\n")
+                    BST.printNode(NIK)
+                elif check == False:
+                    print("Data yang anda cari tidak ditemukan.")
+                
+                masuk2 = True
+                while masuk2:
+                    tanya = input("\nApakah anda ingin mengulang? [y/n] ")
+                    if tanya.lower() == "y":
+                        masuk2 = False
+                        break
+                    elif tanya.lower() == "n":
+                        masuk2 = False
+                        masuk = False
+                        break
+                    else:
+                        print("Input tidak dikenal.")
+                        break
         elif menu == "4":
             # kode menghapus data yang sudah diproses
             masuk = True
