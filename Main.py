@@ -282,15 +282,15 @@ def validasiData(NIK, kelamin, tglLahir):
         # mengecek validasi tanggal lahir
         if len(tglLahir) != 3:
             raise ValueError("Format tanggal yang anda masukan salah")
-        else:
+        elif len(tglLahir) == 3:
             if tglLahir[0].isalpha() or tglLahir[1].isalpha() or tglLahir[2].isalpha():
-                raise ValueError("Format tanggal yang anda masukan salah")
-            if int(tglLahir[0]) < 1 or int(tglLahir[0] > 31):
-                raise ValueError("Format tanggal yang anda masukan salah")
-            if int(tglLahir[1]) < 1 or int(tglLahir[1]) > 12:
-                raise ValueError(" Format tanggal yang anda masukan salah")
-            if int(tglLahir[2]) < 1800 or int(tglLahir[2]) > localtime().tm_year:
-                raise ValueError("Format tanggal yang anda masukan salah")
+                raise ValueError("0Format tanggal yang anda masukan salah")
+            elif int(tglLahir[0]) < 1 or int(tglLahir[0]) > 31:
+                raise ValueError("1Format tanggal yang anda masukan salah")
+            elif int(tglLahir[1]) < 1 or int(tglLahir[1]) > 12:
+                raise ValueError("2Format tanggal yang anda masukan salah")
+            elif int(tglLahir[2]) < 1800 or int(tglLahir[2]) > localtime().tm_year:
+                raise ValueError("3Format tanggal yang anda masukan salah")
 
     # masuk jika ada error
     except ValueError as VE:
@@ -347,9 +347,9 @@ if __name__ == "__main__":
                 tglLahir        = input("Tanggal Lahir       : ").split("/")
                 pekerjaan       = input("Pekerjaan           : ")
 
-                # menghitung usia berdasarkan tanggal lahir
-                valid, pesanError = validasiData(NIK, kelamin, tglLahir)
+                valid, pesanError = print(validasiData(NIK, kelamin, tglLahir))
                 if valid:
+                    # menghitung usia berdasarkan tanggal lahir
                     usia = hitungUsia(tglLahir)
 
                     while True:
