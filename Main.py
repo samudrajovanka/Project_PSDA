@@ -240,6 +240,7 @@ class BinarySearchTree:
     
 # code struktur data linked list
 class Akun:
+    nama = None
     username = None
     password = None
 
@@ -261,10 +262,7 @@ class List:
     def __init__(self):
         self.first = None
         self.data = []
-
-        for i in range(0, 10):
-            self.data.append([])
-            self.data[i] = Elemen()
+        self.data.append(Elemen())
 
     def setFirst(self, first):
         self.first = first
@@ -302,27 +300,27 @@ class List:
                     i = i+1
         return hasil
 
-    def addFirst(self, nim, nama, nilai):
-        if(self.countElemen() < len(self.data)):
-            baru = self.emptyElemen()
-            self.data[baru].getKontainer().nim = nim
-            self.data[baru].getKontainer().nama = nama
-            self.data[baru].getKontainer().nilai = nilai
-
-            if(self.first == -1):
-                self.data[baru].setNext(-1)
-            else:
-                self.data[baru].setNext(self.first)
-            self.first = baru
+    def addFirst(self, nama, username, password):
+        baru = self.emptyElemen()
+        self.data[baru].getKontainer().username = username
+        self.data[baru].getKontainer().password = password
+        self.data[baru].getKontainer().nama = nama
+        
+        if(self.first == -1):
+            self.data[baru].setNext(-1)
         else:
-            print("Sudah Tidak Dapat Ditambah")
+            self.data[baru].setNext(self.first)
+        self.first = baru
+        
+        self.data.append(Elemen())
+        self.data[-1].setNext(-2)
 
-    def addAfter(self, prev, nim, nama, nilai):
-        if((self.countElemen() < len(self.data)) and (prev != -1)):
+    def addAfter(self, prev, nama, username, password):
+        if prev != -1:
             baru = self.emptyElemen()
-            self.data[baru].getKontainer().nim = nim
+            self.data[baru].getKontainer().username = username
+            self.data[baru].getKontainer().password = password
             self.data[baru].getKontainer().nama = nama
-            self.data[baru].getKontainer().nilai = nilai
 
             if(self.data[prev].getNext() == -1):
                 self.data[baru].setNext(-1)
@@ -330,17 +328,18 @@ class List:
                 self.data[baru].setNext(self.data[prev].getNext())
 
             self.data[prev].setNext(baru)
-        else:
-            print("Sudah Tidak Dapat Ditambah")
+            self.data.append(Elemen())
+            self.data[-1].setNext(-2)
+            
 
-    def addLast(self, nim, nama, nilai):
+    def addLast(self, nama, username, password):
         if(self.first == -1):
-            self.addFirst(nim, nama, nilai)
+            self.addFirst(nama, username, password)
         else:
             last = self.first
             while self.data[last].getNext() != -1:
                 last = self.data[last].getNext()
-            self.addAfter(last, nim, nama,nilai)
+            self.addAfter(last, nama, username, password)
 
     def delFirst(self):
         if(self.first != -1):
@@ -387,9 +386,9 @@ class List:
 
             while bantu != -1:
                 print("Elemen ke : ", i)
-                print("Nim : ", self.data[bantu].getKontainer().nim)
+                print("Nim : ", self.data[bantu].getKontainer().username)
+                print("Nama : ", self.data[bantu].getKontainer().password)
                 print("Nama : ", self.data[bantu].getKontainer().nama)
-                print("Nilai : ", self.data[bantu].getKontainer().nilai)
                 print("Next : ", self.data[bantu].getNext())
                 print("----------------------------")
                 bantu = self.data[bantu].getNext()
@@ -398,23 +397,66 @@ class List:
             print("List Kosong")
 
     def delAll(self):
-        for i in range(self.countElemen(),0,-1):
+        for i in range(self.countElemen(),-1,-1):
             self.delLast()
 
+# code untuk login atau daftar slot
 class Login:
     def __init__(self):
-        self.akun = List()
-        self.akun.createList()
+        self.slot = []
         
+        # membuat 10 slot untuk menyimpan data akun
+        for i in range(0, 10):
+            self.slot.append(List())
+            self.slot[i].createList()
+    
     def login(self, username, password):
-        if self.akun.countElemen() != 0:
-            bantu = self.akun.getFirst()
+        index = len(password) - 8
+        if self.slot[index].countElemen() != 0:
+            bantu = self.slot[index].getFirst()
             while bantu != -1:
-                if username == self.akun.data[bantu].getKontainer().username:
-                    pass
+                if (username == self.slot[index].data[bantu].getKontainer().username and
+                    password == self.slot[index].data[bantu].getKontainer().password):
+                        return True
+                else:
+                    bantu = self.slot[index].data[bantu].getNext()
+            
+        return False
         
-    # wei mie tulis sinii
+    def cekValidasiAkun(self, username, password, retryPassword):
+        try:
+            valid = True
+            pesanError = ""
+            
+            for i in range(0, 10):
+                if self.slot[i].countElemen() != 0:
+                    bantu = self.slot[i].getFirst()
+                    while bantu != -1:
+                        if username.lower() == self.slot[i].data[bantu].getKontainer().username.lower():
+                            raise ValueError("Maaf username sudah terdaftar")
+                        else:
+                            bantu = self.slot[i].data[bantu].getNext()
+            
+            if len(password) < 8 or len(password) > 17:
+                raise ValueError("Panjang password antara 8-17")
+            
+            if password != retryPassword:
+                raise ValueError("Password yang anda masukan berbeda")                
+        except ValueError as VE:
+            valid = False
+            pesanError = VE
+        finally:
+            return valid, pesanError  
+    
+    def daftar(self, nama, username, password):
+        index = len(password) - 8
+        if self.slot[index].countElemen() == 0:
+            self.slot[index].addFirst(nama, username, password)
+        else:
+            prev = self.count[index].countElemen() - 1
+            self.slot[index].addAfter(prev, nama, username, password)
         
+    
 # fungsi untuk menghitung usia dilihat dari tanggal lahir
 def hitungUsia(tglLahir):
     waktu = localtime() # mengambil waktu lokal saat ini
@@ -436,14 +478,12 @@ def cekData(NIK, objekQueue, objekBST):
         for i in range(objekQueue.first, objekQueue.last+1):
             if NIK == objekQueue.data[i].NIK:
                 exist = True
-                print("masuk1")
                 break
         else:
             exist = False
         
     # mengecek pada objek BST, apakah sudah ada atau belum
     if not exist:
-        print("masuk2")
         exist = objekBST.find(NIK)
         
     return exist
@@ -484,7 +524,6 @@ def validasiData(NIK, kelamin, tglLahir):
     finally:
         return hasil, pesanError
 
-
 # Main code program
 if __name__ == "__main__":
 
@@ -494,19 +533,88 @@ if __name__ == "__main__":
     # inisialisasi objek
     queue = Queue()
     BST = BinarySearchTree()
+    login = Login()
 
-    # membuar queue kosong
+    # membuat queue kosong
     queue.createEmpty()
-
-    clear()
-    print("Selamat datang di Pendataan Penduduk")
-    print("======================================")
-    print("[1] Masuk")
-    print("[2] Daftar")
-    print("======================================")
-    menu = input("Pilih menu > ")
-
+    
+    # login terlebihi dahulu sebelum masuk kedalam menu utama
     while True:
+        clear()
+        print(" Selamat datang di Pendataan Penduduk")
+        print("======================================")
+        print("[1] Masuk")
+        print("[2] Daftar")
+        print("======================================")
+        menu = input("Pilih menu > ")
+
+        if menu == "1":
+            clear()
+            username = input("Username = ")
+            password = getpass("Password = ")
+            masuk = login.login(username, password)
+            
+            if masuk:
+                break
+            else:
+                clear()
+                print("\aUsername atau password yang anda masukan salah")
+                input("Tekan ENTER untuk kembali")
+        elif menu == "2":
+            masuk = True
+            while masuk:
+                clear()
+                print("======================================")
+                print("             DAFTAR AKUN")
+                print("======================================")
+                nama        = input("Nama           = ")
+                username    = input("Username       = ")
+                password    = getpass("Password       = ")
+                retPass     = getpass("Ulang Password = ")
+                print("======================================")
+                
+                valid, pesanError = login.cekValidasiAkun(username, password, retPass)
+                if valid:
+                    while True:
+                        tanya = input("Apakah anda sudah yakin [y/t] > ")
+                        if tanya.lower() == "y":
+                            clear()
+                            login.daftar(nama, username, password)
+                            print("Selamat akun anda telah terdaftar")
+                            input("Tekan ENTER untuk kembali")
+                            masuk = False
+                            break
+                        elif tanya == "t":
+                            while True:
+                                tanya = input("Apakah anda ingin mengisi ulang [y/t] > ")
+                                # mengisi data ulang
+                                if tanya.lower() == "y":
+                                    break
+                                elif tanya.lower() == "t":
+                                    masuk = False
+                                    break
+                            break
+                else:
+                    print("\n--------------------------------------")
+                    print("\aPERINGATAN")
+                    print(pesanError)
+                    print("--------------------------------------\n")
+                    
+                    while True:
+                        tanya = input("Daftar ulang [y/t] > ")
+                        
+                        if tanya.lower() == "y":
+                            break
+                        elif tanya.lower() == "t":
+                            masuk = False
+                            break
+                
+        else:
+            clear()
+            print("\aMaaf pilihan yang ada masukan tidak tersedia")
+            input("Tekan ENTER untuk kembali ke Menu")
+
+    while masuk:
 
         # Menu utama
         clear()
