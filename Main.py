@@ -7,6 +7,7 @@ Nama Kelompok:
 - Muhammad Raffiza Azka     1910511062
 '''
 
+# import module
 from os import system
 from time import localtime
 
@@ -161,7 +162,7 @@ class BinarySearchTree:
                 print("Tanggal Lahir    :", "/".join(current.tglLahir))
                 print("Usia             :", current.usia)
                 print("Pekerjaan        :", current.pekerjaan)
-                print("===========================")
+                print("======================================")
                 break
             elif (int(current.NIK) > int(NIK)):
                 current = current.left
@@ -239,7 +240,7 @@ class BinarySearchTree:
 
 # fungsi untuk menghitung usia dilihat dari tanggal lahir
 def hitungUsia(tglLahir):
-    waktu = localtime()
+    waktu = localtime() # mengambil waktu lokal saat ini
     usia = (waktu.tm_year-1) - int(tglLahir[2])
 
     if waktu.tm_mon == int(tglLahir[1]):
@@ -252,14 +253,20 @@ def hitungUsia(tglLahir):
 
 # mengecek apakah data sudah ada atau belum
 def cekData(NIK, objekQueue, objekBST):
-    for data in objekQueue.data:
-        if NIK == data.NIK:
-            exist = True
-            break
-    else:
-        exist = False
+    exist = False
+    # mengecek pada objek queue, apakah sudah ada atau belum
+    if not objekQueue.isEmpty():
+        for i in range(objekQueue.first, objekQueue.last+1):
+            if NIK == objekQueue.data[i].NIK:
+                exist = True
+                print("masuk1")
+                break
+        else:
+            exist = False
         
+    # mengecek pada objek BST, apakah sudah ada atau belum
     if not exist:
+        print("masuk2")
         exist = objekBST.find(NIK)
         
     return exist
@@ -269,6 +276,7 @@ def validasiData(NIK, kelamin, tglLahir):
     try:
         hasil = True
         pesanError = ""
+        
         # mengecek validasi NIK
         if NIK.isalpha():
             raise ValueError("NIK yang anda masukan tidak valid")
@@ -300,7 +308,7 @@ def validasiData(NIK, kelamin, tglLahir):
         return hasil, pesanError
 
 
-# Main code
+# Main code program
 if __name__ == "__main__":
 
     # fungsi untuk clear screen
@@ -309,6 +317,8 @@ if __name__ == "__main__":
     # inisialisasi objek
     queue = Queue()
     BST = BinarySearchTree()
+
+    # membuar queue kosong
     queue.createEmpty()
 
     clear()
@@ -317,10 +327,10 @@ if __name__ == "__main__":
 
     while True:
 
-        # Main menu
+        # Menu utama
         clear()
         print("===========================")
-        print("            Menu")
+        print("            MENU")
         print("===========================")
         print("[1] Masukan Data Baru")
         print("[2] Lihat Data")
@@ -336,9 +346,9 @@ if __name__ == "__main__":
             masuk = True
             while masuk:
                 clear()
-                print("=========================")
-                print("        Buat Data")
-                print("=========================")
+                print("======================================")
+                print("             BUAT DATA")
+                print("======================================")
                 NIK         = input("NIK                 : ")
                 nama        = input("Nama                : ")
                 kelamin     = input("Jenis Kelamin [L/P] : ")
@@ -346,17 +356,21 @@ if __name__ == "__main__":
                 print("- Format DD/MM/YYYY")
                 tglLahir    = input("Tanggal Lahir       : ").split("/")
                 pekerjaan   = input("Pekerjaan           : ")
-                print("=========================")
+                print("======================================\n")
 
                 # mengecek kevalidasian data
                 valid, pesanError = validasiData(NIK, kelamin, tglLahir)
                 
+                # jika data sudah valid data dapat diproses
                 if valid:
+                    # pengecekean data apakah sudah ada atau belum (berdasarkan NIK)
                     exist = cekData(NIK, queue, BST)
                     if exist:
-                        # Data tidak berhasil ditambahkan karena NIK sudah ada 
-                        print("\a\nPERHATIAN")
-                        print("Data yang anda masukan sudah ada\n")
+                        # Data tidak berhasil ditambahkan karena NIK sudah ada
+                        print("--------------------------------------")
+                        print("\aPERHATIAN!!!")
+                        print("Data yang anda masukan sudah ada")
+                        print("--------------------------------------\n")
 
                         while True:
                             tanya = input("Apakah anda ingin mengisi ulang [y/t] > ")
@@ -368,9 +382,9 @@ if __name__ == "__main__":
                                 break
                     else:
                         while True:
-                            tanya = input("\nApakah anda sudah yakin [y/t] > ")
+                            tanya = input("Apakah anda sudah yakin [y/t] > ")
+                            # data akan disimpan lalu akan diproses
                             if tanya.lower() == "y":
-                                
                                 # menghitung usia berdasarkan tanggal lahir
                                 usia = hitungUsia(tglLahir)
                                 
@@ -395,8 +409,11 @@ if __name__ == "__main__":
                                         break
                                 break
                 else:
-                    print("\a\nPERHATIAN")
-                    print(pesanError, "\n")
+                    print("--------------------------------------")
+                    print("\aPERHATIAN!!!")
+                    print(pesanError)
+                    print("--------------------------------------\n")
+                    
                     while True:
                         tanya = input("Apakah anda ingin mengisi ulang [y/t] > ")
                         # mengisi data ulang
@@ -410,45 +427,48 @@ if __name__ == "__main__":
             # kode untuk melihat data yang sudah selesai diproses
             while True:
                 clear()
-                print("====================================")
-                print("          Data Penduduk")
-                print("====================================")
+                print("======================================")
+                print("             DATA PENDUDUK")
+                print("======================================")
                 print("NIK\t\tNama")
-                print("------------------------------------")
+                print("--------------------------------------")
                 BST.display(BST.root)
                 
+                # jika pada BST tidak kosong maka akan menampilkan menu tambahan
                 if not BST.isEmpty():
                     print("\n\n[1] Lihat Detail Data")
                     print("[2] Kembali ke menu")
-                    print("====================================")
+                    print("======================================")
                     tanya = input("Pilih menu > ")
+                    
+                    if tanya == "1":
+                        NIK = input("\nMasukkan NIK untuk lihat detail data = ")
+                        exist = BST.find(NIK)
+                        
+                        if exist:
+                            clear()                        
+                            print("======================================")
+                            print("             DATA PENDUDUK")
+                            print("======================================")
+                            BST.printNode(NIK)                        
+                        else:
+                            clear()
+                            print("\aData yang anda cari tidak ditemukan.")
+                            
+                        input("\nTekan ENTER untuk kembali")
+                        
+                    elif tanya == "2":
+                        break
+                    else:
+                        clear()
+                        print("\aMaaf pilihan yang ada masukan tidak tersedia")
+                        input("Tekan ENTER untuk kembali")
+                
+                # Jika data pada BST kosong maka hanya akan menampilkan sebagai berikut
                 else:
                     input("\nTekan ENTER untuk kembali ke Menu")
                     break
-                
-                if tanya == "1":
-                    NIK = input("\nMasukkan NIK untuk lihat detail data = ")
-                    exist = BST.find(NIK)
-                    
-                    if exist:
-                        clear()
-                        print("===========================")
-                        print("       Data Penduduk")
-                        print("===========================")
-                        BST.printNode(NIK)                        
-                    else:
-                        clear()
-                        print("\aData yang anda cari tidak ditemukan.")
-                        
-                    input("\nTekan ENTER untuk kembali")
-                    
-                elif tanya == "2":
-                    break
-                else:
-                    clear()
-                    print("\aMaaf pilihan yang ada masukan tidak tersedia")
-                    input("Tekan ENTER untuk kembali")
-                    
+
         elif menu == "3":
             # kode mencari data yang sudah selesai diproses
             masuk = True
@@ -460,10 +480,11 @@ if __name__ == "__main__":
                 exist = BST.find(NIK)
                 
                 clear()
+                # Jika data ditemukan maka akan menampilkan data sesuai NIK yang dicari
                 if exist == True:
-                    print("===========================")
-                    print("       Data Penduduk")
-                    print("===========================")
+                    print("====================================")
+                    print("             DATA PENDUDUK")
+                    print("====================================")
                     BST.printNode(NIK)
                 elif exist == False:
                     print("\aData yang anda cari tidak ditemukan")
@@ -476,7 +497,7 @@ if __name__ == "__main__":
                     elif tanya.lower() == "t":
                         masuk = False
                         break
-                    
+
         elif menu == "4":
             # kode menghapus data yang sudah diproses
             masuk = True
@@ -488,18 +509,20 @@ if __name__ == "__main__":
                 exist = BST.find(NIK)
                 
                 clear()
+                # Jika data ditemukan maka akan menampilkan datanya terlebih dahulu sebelum dihapus
                 if exist == True:
-                    clear()
-                    print("=========================")
-                    print("        Hapus Data")
-                    print("=========================")
+                    clear()                    
+                    print("======================================")
+                    print("             HAPUS DATA")
+                    print("======================================")
                     BST.printNode(NIK)
                     
+                    print(end= "\n")
                     while True:
-                        tanya = input("\nApakah anda yakin ingin menghapus data ini [y/t] > ")
+                        tanya = input("Apakah anda yakin ingin menghapus data ini [y/t] > ")
                         
-                        clear()
                         if tanya.lower() == "y":
+                            clear()
                             # menghapus data pada BST
                             BST.delete(NIK)
                             print("Data berhasil dihapus!!!")
@@ -507,7 +530,8 @@ if __name__ == "__main__":
                             
                             masuk = False
                             break
-                        elif tanya.lower() == 't':                            
+                        elif tanya.lower() == 't':
+                            clear()
                             # Data tidak jadi dihapus
                             print("Data tidak jadi dihapus")
                             while True:
@@ -533,11 +557,11 @@ if __name__ == "__main__":
         elif menu == "5":
             # kode untuk melihat data yang masih dalam proses
             clear()
-            print("====================================")
-            print("             Dalam Proses")
-            print("====================================")
+            print("======================================")
+            print("             DALAM PROSES")
+            print("======================================")
             print("NIK\t\tNama")
-            print("------------------------------------")
+            print("--------------------------------------")
 
             # mencetak isi dalam antrian proses
             queue.printQueue()
@@ -546,8 +570,9 @@ if __name__ == "__main__":
                 # mengambil data yang ada pada antrian pertama
                 dataPertama = queue.getFirst()
                 
+                print(end= "\n")
                 while True:
-                    tanya = input("\nApakah data dengan NIK " + dataPertama.NIK + " sudah selesai dikerjakan [y/t] > ")
+                    tanya = input("Apakah data dengan NIK " + dataPertama.NIK + " sudah selesai dikerjakan [y/t] > ")
 
                     # memasukan data pertama pada antrian kedalam data yang sudah selesai dikerjakan
                     if tanya.lower() == "y":
@@ -562,7 +587,7 @@ if __name__ == "__main__":
                         input("\nTekan ENTER untuk kembali ke Menu")
                         break
             else:
-                input("Tekan ENTER untuk kembali ke Menu")
+                input("\nTekan ENTER untuk kembali ke Menu")
 
         elif menu == "6":
             # kode untuk keluar dari program
