@@ -10,6 +10,7 @@ Nama Kelompok:
 # import module
 from os import system
 from time import localtime
+from getpass import getpass
 
 # code struktur data Queue
 class DataPenduduk:
@@ -236,8 +237,184 @@ class BinarySearchTree:
             successor.right = deleteNode.right
 
         return successor
+    
+# code struktur data linked list
+class Akun:
+    username = None
+    password = None
 
+class Elemen:
+    def __init__(self):
+        self.kontainer = Akun()
+        self.next = None
 
+    def getKontainer(self):
+        return self.kontainer
+
+    def setNext(self, nextt):
+        self.next = nextt
+
+    def getNext(self):
+        return self.next
+
+class List:
+    def __init__(self):
+        self.first = None
+        self.data = []
+
+        for i in range(0, 10):
+            self.data.append([])
+            self.data[i] = Elemen()
+
+    def setFirst(self, first):
+        self.first = first
+
+    def getFirst(self):
+        return self.first
+
+    def createList(self):
+        self.first = -1
+        for i in range(0, len(self.data)):
+            self.data[i].setNext(-2)
+
+    def countElemen(self):
+        hasil = 0
+        if(self.first != -1):
+            bantu = self.first
+
+            while bantu != -1:
+                hasil = hasil + 1
+                bantu = self.data[bantu].getNext()
+        return hasil
+
+    def emptyElemen(self):
+        hasil = -1
+
+        if(self.countElemen() < len(self.data)):
+            ketemu = False
+            i = 0
+
+            while(ketemu == False) and (i < len(self.data)):
+                if(self.data[i].getNext() == -2):
+                    hasil = i
+                    ketemu = True
+                else:
+                    i = i+1
+        return hasil
+
+    def addFirst(self, nim, nama, nilai):
+        if(self.countElemen() < len(self.data)):
+            baru = self.emptyElemen()
+            self.data[baru].getKontainer().nim = nim
+            self.data[baru].getKontainer().nama = nama
+            self.data[baru].getKontainer().nilai = nilai
+
+            if(self.first == -1):
+                self.data[baru].setNext(-1)
+            else:
+                self.data[baru].setNext(self.first)
+            self.first = baru
+        else:
+            print("Sudah Tidak Dapat Ditambah")
+
+    def addAfter(self, prev, nim, nama, nilai):
+        if((self.countElemen() < len(self.data)) and (prev != -1)):
+            baru = self.emptyElemen()
+            self.data[baru].getKontainer().nim = nim
+            self.data[baru].getKontainer().nama = nama
+            self.data[baru].getKontainer().nilai = nilai
+
+            if(self.data[prev].getNext() == -1):
+                self.data[baru].setNext(-1)
+            else:
+                self.data[baru].setNext(self.data[prev].getNext())
+
+            self.data[prev].setNext(baru)
+        else:
+            print("Sudah Tidak Dapat Ditambah")
+
+    def addLast(self, nim, nama, nilai):
+        if(self.first == -1):
+            self.addFirst(nim, nama, nilai)
+        else:
+            last = self.first
+            while self.data[last].getNext() != -1:
+                last = self.data[last].getNext()
+            self.addAfter(last, nim, nama,nilai)
+
+    def delFirst(self):
+        if(self.first != -1):
+            hapus = self.first
+
+            if(self.countElemen() == 1):
+                self.first = -1
+            else:
+                self.first = self.data[self.first].getNext()
+            self.data[hapus].setNext(-2)
+        else:
+            print("List Kosong")
+
+    def delAfter(self, prev):
+        if(prev != -1):
+            hapus = self.data[prev].getNext()
+            if(hapus != -1):
+                if(self.data[hapus].getNext() == -1):
+                    self.data[prev].setNext(-1)
+                else:
+                    self.data[prev].setNext(self.data[hapus].getNext())
+
+                self.data[hapus].setNext(-2)
+
+    def delLast(self):
+        if(self.first != -1):
+            if(self.countElemen() == 1):
+                self.delFirst()
+            else:
+                last = self.first
+                before_last = -1
+
+                while self.data[last].getNext() != -1:
+                    before_last = last 
+                    last = self.data[last].getNext()
+                self.delAfter(before_last)
+        else:
+            print("List Kosong")
+
+    def printElement(self):
+        if(self.first != -1):
+            bantu = self.first
+            i = 1
+
+            while bantu != -1:
+                print("Elemen ke : ", i)
+                print("Nim : ", self.data[bantu].getKontainer().nim)
+                print("Nama : ", self.data[bantu].getKontainer().nama)
+                print("Nilai : ", self.data[bantu].getKontainer().nilai)
+                print("Next : ", self.data[bantu].getNext())
+                print("----------------------------")
+                bantu = self.data[bantu].getNext()
+                i = i+1
+        else:
+            print("List Kosong")
+
+    def delAll(self):
+        for i in range(self.countElemen(),0,-1):
+            self.delLast()
+
+class Login:
+    def __init__(self):
+        self.akun = List()
+        self.akun.createList()
+        
+    def login(self, username, password):
+        if self.akun.countElemen() != 0:
+            bantu = self.akun.getFirst()
+            while bantu != -1:
+                if username == self.akun.data[bantu].getKontainer().username:
+                    pass
+        
+    # wei mie tulis sinii
+        
 # fungsi untuk menghitung usia dilihat dari tanggal lahir
 def hitungUsia(tglLahir):
     waktu = localtime() # mengambil waktu lokal saat ini
@@ -327,7 +504,7 @@ if __name__ == "__main__":
     print("[1] Masuk")
     print("[2] Daftar")
     print("======================================")
-    input("Pilih menu > ")
+    menu = input("Pilih menu > ")
 
     while True:
 
