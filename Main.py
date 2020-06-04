@@ -323,7 +323,11 @@ if __name__ == "__main__":
 
     clear()
     print("Selamat datang di Pendataan Penduduk")
-    input("Tekan ENTER untuk masuk")
+    print("======================================")
+    print("[1] Masuk")
+    print("[2] Daftar")
+    print("======================================")
+    input("Pilih menu > ")
 
     while True:
 
