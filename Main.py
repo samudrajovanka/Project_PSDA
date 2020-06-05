@@ -380,7 +380,7 @@ class List:
             print("List Kosong")
     
     def delete(self, username):
-        if(self.first != 1):
+        if(self.first != -1):
             if(self.countElemen() == 1):
                 self.delFirst()
             else:
@@ -388,10 +388,12 @@ class List:
                 prev = self.first
                 
                 while bantu != -1:
-                    if self.data[self.first].getKontainer().username == username:
-                        delFirst()
-                    elif self.data[bantu].getKontainer().username == username:
-                        delAfter(prev)
+                    if self.data[self.first].getKontainer().username.lower() == username.lower():
+                        self.delFirst()
+                        break
+                    elif self.data[bantu].getKontainer().username.lower() == username.lower():
+                        self.delAfter(prev)
+                        break
                     
                     prev = bantu
                     bantu = self.data[bantu].getNext()
@@ -509,7 +511,7 @@ class Login:
         if self.slot[index].countElemen() == 0:
             self.slot[index].addFirst(nama, username, password)
         else:
-            prev = self.count[index].countElemen() - 1
+            prev = self.slot[index].countElemen() - 1
             self.slot[index].addAfter(prev, nama, username, password)
             
 # fungsi untuk menghitung usia dilihat dari tanggal lahir
