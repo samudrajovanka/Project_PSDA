@@ -8,9 +8,9 @@ Nama Kelompok:
 '''
 
 # import module
-from os import system
-from time import localtime
-from getpass import getpass
+from os import system # untuk membuat clear screen
+from time import localtime # untuk mengambil waktu sekarang
+from getpass import getpass # untuk mengetik password
 
 # code struktur data Queue
 class DataPenduduk:
@@ -251,7 +251,7 @@ class Elemen:
 
     def getKontainer(self):
         return self.kontainer
-
+    
     def setNext(self, nextt):
         self.next = nextt
 
@@ -416,7 +416,7 @@ class List:
             print("List Kosong")
             
     def printNode(self, username):
-        if(self.first != 1):
+        if(self.first != -1):
             bantu = self.getFirst()
             
             while bantu != -1:
@@ -430,6 +430,16 @@ class List:
                 
         else:
             print("List Kosong")
+            
+    def getNama(self, username):
+        if(self.first != -1):
+            bantu = self.getFirst()
+            
+            while bantu != -1:
+                if self.data[bantu].getKontainer().username == username:
+                    return self.data[bantu].getKontainer().nama
+                                
+                bantu = self.data[bantu].getNext()
 
     def delAll(self):
         for i in range(self.countElemen(),-1,-1):
@@ -438,7 +448,7 @@ class List:
 # code untuk login atau daftar slot
 class Login:
     def __init__(self):
-        self.akunLogin = None
+        self.akunLogin = -1
         self.username = None
         self.slot = []
         
@@ -452,7 +462,7 @@ class Login:
         if self.slot[index].countElemen() != 0:
             bantu = self.slot[index].getFirst()
             while bantu != -1:
-                if (username == self.slot[index].data[bantu].getKontainer().username and
+                if (username.lower() == self.slot[index].data[bantu].getKontainer().username.lower() and
                     password == self.slot[index].data[bantu].getKontainer().password):
                         self.akunLogin = index
                         self.username = username
@@ -467,6 +477,7 @@ class Login:
             valid = True
             pesanError = ""
             
+            # mengecek apakah username sudah terdaftar
             for i in range(0, 10):
                 if self.slot[i].countElemen() != 0:
                     bantu = self.slot[i].getFirst()
@@ -476,9 +487,15 @@ class Login:
                         else:
                             bantu = self.slot[i].data[bantu].getNext()
             
+            # mengecek apakah panjang password sudah sesuai
             if len(password) < 8 or len(password) > 17:
                 raise ValueError("Panjang password antara 8-17")
             
+            # mengecek apakah password alphanumeric
+            if not password.isalnum():
+                raise ValueError("Password harus alphanumeric")
+            
+            # mengecek apakah password cocok
             if password != retryPassword:
                 raise ValueError("Password yang anda masukan berbeda")                
         except ValueError as VE:
@@ -494,8 +511,7 @@ class Login:
         else:
             prev = self.count[index].countElemen() - 1
             self.slot[index].addAfter(prev, nama, username, password)
-        
-    
+            
 # fungsi untuk menghitung usia dilihat dari tanggal lahir
 def hitungUsia(tglLahir):
     waktu = localtime() # mengambil waktu lokal saat ini
@@ -577,10 +593,11 @@ if __name__ == "__main__":
     # membuat queue kosong
     queue.createEmpty()
     
-    # login terlebihi dahulu sebelum masuk kedalam menu utama
+    # login terlebih dahulu sebelum masuk kedalam menu utama
     while True:
         loginAkses = False
         clear()
+        print("======================================")
         print(" Selamat datang di Pendataan Penduduk")
         print("======================================")
         print("[1] Masuk")
@@ -620,6 +637,7 @@ if __name__ == "__main__":
                 
                 valid, pesanError = login.cekValidasiAkun(username, password, retPass)
                 if valid:
+                    # jika data sudah valid maka akan diproses
                     while True:
                         tanya = input("Apakah anda sudah yakin [y/t] > ")
                         if tanya.lower() == "y":
@@ -640,6 +658,7 @@ if __name__ == "__main__":
                                     break
                             break
                 else:
+                    # jika tidak valid maka akan ada pesan errornya
                     print("\n--------------------------------------")
                     print("\aPERINGATAN")
                     print(pesanError)
@@ -655,7 +674,7 @@ if __name__ == "__main__":
                             break
         
         elif menu == "3":
-            # kode untuk keluar dar program
+            # kode untuk keluar dari program
             clear()
             exit("Terima kasih...")    
         
@@ -668,6 +687,7 @@ if __name__ == "__main__":
         while loginAkses == True:
             # Menu utama
             clear()
+            print("Pegawai =", login.slot[login.akunLogin].getNama(login.username))
             print("===========================")
             print("            MENU")
             print("===========================")
@@ -944,6 +964,7 @@ if __name__ == "__main__":
                     menu = input("Pilih menu > ")
 
                     if menu == "1":
+                        # kode untuk mengapus akun
                         print(end= "\n")
                         while True:
                             tanya = input("Apakah anda yakin ingin menghapus akun [y/t] > ")
@@ -973,6 +994,7 @@ if __name__ == "__main__":
                 # kode untuk keluar menu utama
                 clear()
                 break
+            
             else:
                 # kode jika user memilih diluar jangkauan pilihan menu
                 clear()
