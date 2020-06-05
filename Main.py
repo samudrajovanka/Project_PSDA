@@ -420,7 +420,7 @@ class List:
             bantu = self.getFirst()
             
             while bantu != -1:
-                if self.data[bantu].getKontainer().username == username:
+                if self.data[bantu].getKontainer().username.lower() == username.lower():
                     print("Nama     :", self.data[bantu].getKontainer().nama)
                     print("Username :", self.data[bantu].getKontainer().username)
                     print("Password :", self.data[bantu].getKontainer().password)
@@ -436,7 +436,7 @@ class List:
             bantu = self.getFirst()
             
             while bantu != -1:
-                if self.data[bantu].getKontainer().username == username:
+                if self.data[bantu].getKontainer().username.lower() == username.lower():
                     return self.data[bantu].getKontainer().nama
                                 
                 bantu = self.data[bantu].getNext()
@@ -445,7 +445,7 @@ class List:
         for i in range(self.countElemen(),-1,-1):
             self.delLast()
 
-# code untuk login atau daftar slot
+# code untuk login atau daftar
 class Login:
     def __init__(self):
         self.akunLogin = -1
@@ -985,6 +985,7 @@ if __name__ == "__main__":
                                 
                     elif menu == "2":
                         break
+                    
                     else:
                         clear()
                         print("\aMaaf pilihan yang ada masukan tidak tersedia")
